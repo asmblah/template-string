@@ -43,6 +43,13 @@ describe('templateString()', function () {
                 who: 'John'
             },
             expectedResult: 'hello world from John, yes John'
+        },
+        'with non matched params': {
+            string: 'hello world from ${who}, yes ${who}"${foo}"-"${bar}"',
+            variables: {
+                who: 'John'
+            },
+            expectedResult: 'hello world from John, yes John""-""'
         }
     }, function (scenario, description) {
         describe(description, function () {
