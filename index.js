@@ -18,7 +18,9 @@ function templateString(string, variables) {
         string = string.replace(pattern, value);
     });
 
-    return string;
+    // removes remaining not matched entries and return string
+
+    return string.replace(/\${\w+}/g, '');
 }
 
 module.exports = templateString;
