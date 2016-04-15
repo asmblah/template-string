@@ -20,6 +20,11 @@ var hasOwn = {}.hasOwnProperty;
  * @returns {string}
  */
 function templateString(string, variables) {
+    if (!variables) {
+        // Nothing to do if no variables object was provided
+        return string;
+    }
+
     return string.replace(/\$\{([^}]+)}/g, function (all, name) {
         if (hasOwn.call(variables, name)) {
             return variables[name];

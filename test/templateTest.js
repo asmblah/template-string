@@ -69,6 +69,11 @@ describe('templateString()', function () {
                 stuff: 'I should be ignored'
             }),
             expectedResult: 'my ${stuff} here'
+        },
+        'replacement variables object should be optional': {
+            string: 'my ${stuff} here',
+            variables: undefined,
+            expectedResult: 'my ${stuff} here'
         }
     }, function (scenario, description) {
         describe(description, function () {
