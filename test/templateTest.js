@@ -43,6 +43,32 @@ describe('templateString()', function () {
                 who: 'John'
             },
             expectedResult: 'hello world from John, yes John'
+        },
+        'with special patterns in the replacement string': {
+            string: 'this has ${first}, ${second}, ${third}, ${fourth} and ${fifth} inside',
+            variables: {
+                first: '$',
+                second: '$&',
+                third: '$`', // "$'" is a special replacement for all text up to the matched string
+                fourth: '$\'', // "$'" is a special replacement for the rest of the matched string
+                fifth: '$1' // "$n" references a capturing group
+            },
+            expectedResult: 'this has $, $&, $`, $\' and $1 inside'
+        },
+        'replacements with embedded placeholders should not be recursively processed': {
+            string: 'hello ${there} world',
+            variables: {
+                there: '${myReplacement}',
+                myReplacement: 'I should be ignored'
+            },
+            expectedResult: 'hello ${myReplacement} world'
+        },
+        'only own properties of the variables object should be used': {
+            string: 'my ${stuff} here',
+            variables: Object.create({
+                stuff: 'I should be ignored'
+            }),
+            expectedResult: 'my ${stuff} here'
         }
     }, function (scenario, description) {
         describe(description, function () {

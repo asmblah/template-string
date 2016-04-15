@@ -9,16 +9,24 @@
 
 'use strict';
 
-var _ = require('microdash');
+var hasOwn = {}.hasOwnProperty;
 
+/**
+ * Replaces placeholders in `string` of the form `${...}`
+ * if they are specified as own properties of `variables`
+ *
+ * @param {string} string
+ * @param {Object.<string, string>} variables
+ * @returns {string}
+ */
 function templateString(string, variables) {
-    _.forOwn(variables, function (value, name) {
-        var pattern = new RegExp(('${' + name + '}').replace(/[^a-z0-9]/g, '\\$&'), 'g');
+    return string.replace(/\$\{([^}]+)}/g, function (all, name) {
+        if (hasOwn.call(variables, name)) {
+            return variables[name];
+        }
 
-        string = string.replace(pattern, value);
+        return all;
     });
-
-    return string;
 }
 
 module.exports = templateString;
